@@ -94,24 +94,13 @@ export default class RNSketchCanvas extends React.Component {
     strokeWidthComponent: null,
 
     strokeColors: [
-      { color: "#000000" },
-      { color: "#FF0000" },
-      { color: "#00FFFF" },
-      { color: "#0000FF" },
-      { color: "#0000A0" },
-      { color: "#ADD8E6" },
-      { color: "#800080" },
-      { color: "#FFFF00" },
-      { color: "#00FF00" },
-      { color: "#FF00FF" },
-      { color: "#FFFFFF" },
-      { color: "#C0C0C0" },
-      { color: "#808080" },
-      { color: "#FFA500" },
-      { color: "#A52A2A" },
-      { color: "#800000" },
-      { color: "#008000" },
-      { color: "#808000" }
+      { color: "rgba(0,0,0,1)" },
+      { color: "rgba(239,89,82,1)" },
+      { color: "rgba(255,211,39,1)" },
+      { color: "rgba(154,230,0,1)" },
+      { color: "rgba(80,213,245,1)" },
+      { color: "rgba(85,162,248,1)" },
+      { color: "rgba(162,108,250,1)" }
     ],
     alphlaValues: ["33", "77", "AA", "FF"],
     defaultStrokeIndex: 0,
@@ -244,7 +233,7 @@ export default class RNSketchCanvas extends React.Component {
     >
       {this.state.color !== item.color &&
         this.props.strokeComponent &&
-        this.props.strokeComponent(item.color)}
+        this.props.strokeComponent(item.color, index)}
       {this.state.color === item.color &&
         this.props.strokeSelectedComponent &&
         this.props.strokeSelectedComponent(
@@ -309,7 +298,7 @@ export default class RNSketchCanvas extends React.Component {
               alignItems: "center"
             }}
           >
-            <FlatList
+            {/* <FlatList
               data={this.props.strokeColors}
               extraData={this.state}
               keyExtractor={() =>
@@ -318,37 +307,11 @@ export default class RNSketchCanvas extends React.Component {
               renderItem={this._renderItem}
               horizontal
               showsHorizontalScrollIndicator={false}
-            />
+            /> */}
 
-            {/* <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false} 
-            bounces={false} 
-            style={{}} contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
-              {this.props.strokeColors.map((item, index) => {
-                return(
-                    <TouchableOpacity key={index} onPress={() => {
-                      if (this.state.color === item.color) {
-                        const index = this.props.alphlaValues.indexOf(this.state.alpha)
-                        if (this._alphaStep < 0) {
-                          this._alphaStep = index === 0 ? 1 : -1
-                          this.setState({ alpha: this.props.alphlaValues[index + this._alphaStep] })
-                        } else {
-                          this._alphaStep = index === this.props.alphlaValues.length - 1 ? -1 : 1
-                          this.setState({ alpha: this.props.alphlaValues[index + this._alphaStep] })
-                        }
-                      } else {
-                        this.setState({ color: item.color })
-                        this._colorChanged = true
-                      }
-                    }}>
-                      {this.state.color !== item.color && this.props.strokeComponent && this.props.strokeComponent(item.color)}
-                      {this.state.color === item.color && this.props.strokeSelectedComponent && this.props.strokeSelectedComponent(item.color + this.state.alpha, index, this._colorChanged)}
-                  </TouchableOpacity>
-                
-                )
-             })}
-          </ScrollView> */}
+            {this.props.strokeColors.map((item, index) => {
+              return this._renderItem({ item, index });
+            })}
           </View>
           <View style={{ flexDirection: "row" }}>
             <View
