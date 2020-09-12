@@ -13,6 +13,14 @@ import SketchCanvas from "./src/SketchCanvas";
 import { requestPermissions } from "./src/handlePermissions";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
+const COMPONENT_NAME = {
+  ERASER: "ERASER",
+  PENCIL: "PENCIL",
+  BRUSH: "BRUSH",
+  UNDO: "UNDO",
+  BIN: "BIN"
+};
 export default class RNSketchCanvas extends React.Component {
   static propTypes = {
     containerStyle: ViewPropTypes.style,
@@ -126,7 +134,8 @@ export default class RNSketchCanvas extends React.Component {
     this.state = {
       color: props.strokeColors[props.defaultStrokeIndex].color,
       strokeWidth: props.defaultStrokeWidth,
-      alpha: "FF"
+      alpha: "FF",
+      nameOfComponentSelected: COMPONENT_NAME.PENCIL
     };
 
     this._colorChanged = false;
@@ -256,6 +265,7 @@ export default class RNSketchCanvas extends React.Component {
   }
 
   render() {
+    const { nameOfComponentSelected } = this.state;
     return (
       <View style={this.props.containerStyle}>
         <SketchCanvas
@@ -315,16 +325,6 @@ export default class RNSketchCanvas extends React.Component {
                   {this.props.closeComponent}
                 </TouchableOpacity>
               )}
-
-              {this.props.eraseComponent && (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({ color: "#00000000" });
-                  }}
-                >
-                  {this.props.eraseComponent}
-                </TouchableOpacity>
-              )}
             </View>
             <View
               style={{
@@ -335,8 +335,21 @@ export default class RNSketchCanvas extends React.Component {
             >
               {this.props.strokePencilWidthComponent && (
                 <TouchableOpacity
+                  style={{
+                    transform: [
+                      {
+                        scale:
+                          nameOfComponentSelected == COMPONENT_NAME.PENCIL
+                            ? 1.5
+                            : 1
+                      }
+                    ]
+                  }}
                   onPress={() => {
-                    this.setState({ strokeWidth: 5 });
+                    this.setState({
+                      strokeWidth: 5,
+                      nameOfComponentSelected: COMPONENT_NAME.PENCIL
+                    });
                   }}
                 >
                   {this.props.strokePencilWidthComponent()}
@@ -345,8 +358,21 @@ export default class RNSketchCanvas extends React.Component {
 
               {this.props.strokeBrushWidthComponent && (
                 <TouchableOpacity
+                  style={{
+                    transform: [
+                      {
+                        scale:
+                          nameOfComponentSelected == COMPONENT_NAME.BRUSH
+                            ? 1.5
+                            : 1
+                      }
+                    ]
+                  }}
                   onPress={() => {
-                    this.setState({ strokeWidth: 10 });
+                    this.setState({
+                      strokeWidth: 10,
+                      nameOfComponentSelected: COMPONENT_NAME.BRUSH
+                    });
                   }}
                 >
                   {this.props.strokeBrushWidthComponent()}
@@ -355,19 +381,68 @@ export default class RNSketchCanvas extends React.Component {
 
               {this.props.undoComponent && (
                 <TouchableOpacity
+                  style={{
+                    transform: [
+                      {
+                        scale:
+                          nameOfComponentSelected == COMPONENT_NAME.UNDO
+                            ? 1.5
+                            : 1
+                      }
+                    ]
+                  }}
                   onPress={() => {
                     this.props.onUndoPressed(this.undo());
+                    this.setState({
+                      nameOfComponentSelected: COMPONENT_NAME.UNDO
+                    });
                   }}
                 >
                   {this.props.undoComponent}
                 </TouchableOpacity>
               )}
 
+              {this.props.eraseComponent && (
+                <TouchableOpacity
+                  style={{
+                    transform: [
+                      {
+                        scale:
+                          nameOfComponentSelected == COMPONENT_NAME.ERASER
+                            ? 1.5
+                            : 1
+                      }
+                    ]
+                  }}
+                  onPress={() => {
+                    this.setState({
+                      color: "#00000000",
+                      nameOfComponentSelected: COMPONENT_NAME.ERASER
+                    });
+                  }}
+                >
+                  {this.props.eraseComponent}
+                </TouchableOpacity>
+              )}
+
               {this.props.clearComponent && (
                 <TouchableOpacity
+                  style={{
+                    transform: [
+                      {
+                        scale:
+                          nameOfComponentSelected == COMPONENT_NAME.BIN
+                            ? 1.5
+                            : 1
+                      }
+                    ]
+                  }}
                   onPress={() => {
                     this.clear();
                     this.props.onClearPressed();
+                    this.setState({
+                      nameOfComponentSelected: COMPONENT_NAME.BIN
+                    });
                   }}
                 >
                   {this.props.clearComponent}
