@@ -283,42 +283,27 @@ export default class RNSketchCanvas extends React.Component {
           style={{
             backgroundColor: "rgba(53, 47, 73, 1)",
             width: screenWidth,
-            height: screenHeight * 0.25,
-            justifyContent: "center",
+            height: "25%",
+            justifyContent: "space-around",
             alignItems: "center"
           }}
         >
           <View
             style={{
               flexDirection: "row",
-              alignSelf: "center",
               width: "90%",
               borderRadius: 50,
-              justifyContent: "center",
-              alignItems: "center"
+              justifyContent: "center"
             }}
           >
-            {/* <FlatList
-              data={this.props.strokeColors}
-              extraData={this.state}
-              keyExtractor={() =>
-                Math.ceil(Math.random() * 10000000).toString()
-              }
-              renderItem={this._renderItem}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            /> */}
-
             {this.props.strokeColors.map((item, index) => {
               return this._renderItem({ item, index });
             })}
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", height: "30%" }}>
             <View
               style={{
-                flexDirection: "row",
-                flex: 1,
-                justifyContent: "flex-start"
+                flexDirection: "row"
               }}
             >
               {this.props.closeComponent && (
@@ -343,9 +328,9 @@ export default class RNSketchCanvas extends React.Component {
             </View>
             <View
               style={{
+                width: "85%",
                 flexDirection: "row",
-                flex: 1,
-                justifyContent: "flex-end"
+                justifyContent: "space-between"
               }}
             >
               {this.props.strokePencilWidthComponent && (
@@ -386,16 +371,6 @@ export default class RNSketchCanvas extends React.Component {
                   }}
                 >
                   {this.props.clearComponent}
-                </TouchableOpacity>
-              )}
-
-              {this.props.saveComponent && (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.save();
-                  }}
-                >
-                  {this.props.saveComponent}
                 </TouchableOpacity>
               )}
             </View>
